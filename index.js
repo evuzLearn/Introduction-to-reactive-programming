@@ -1,7 +1,10 @@
-const observable = Rx.Observable.interval(1000);
+const input = document.querySelector('input');
+const observable = Rx.Observable.fromEvent(input, 'input');
 
 observable
-    .filter((value) => value % 2 === 0)
+    .debounceTime(500)
+    .map((ev) => ev.target.value)
+    .distinctUntilChanged()
     .subscribe({
         next: (value) => console.log(value),
         error: (err) => console.log(err)

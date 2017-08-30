@@ -1,18 +1,9 @@
-const button = document.querySelector('button');
-
+const observable = Rx.Observable.interval(1000);
 const observer = {
-    next: (value) => console.log('Next ', value),
-    error: (err) => console.log('Error ', err),
-    complete: () => console.log('Completed')
-}
+    next: (value) => console.log(value)
+};
 
-// Rx.Observable.fromEvent(button, 'click')
-const subscription = Rx.Observable.create(
-    (obs) => {
-        button.onclick = (ev) => { obs.next(ev) };
-    }).subscribe(observer);
-
-setTimeout(function() {
-    subscription.unsubscribe();
-    console.log('Unsubscribe');
-}, 5000);
+observable
+    .map((value) => 'Number: ' + value)
+    .throttleTime(2000)
+    .subscribe(observer);

@@ -1,7 +1,18 @@
 const button = document.querySelector('button');
 
-// button.addEventListener('click', (ev) => console.log(ev));
-Rx.Observable.fromEvent(button, 'click')
-    .throttleTime(1000)
-    .map((data) => { return {Y: data.clientY, X: data.clientX} })
-    .subscribe((coordinate) => console.log(coordinate.X));
+const observer = {
+    next: (value) => console.log('Next ', value),
+    error: (err) => console.log('Error ', err),
+    complete: () => console.log('Completed')
+}
+
+// Rx.Observable.fromEvent(button, 'click')
+const subscription = Rx.Observable.create(
+    (obs) => {
+        button.onclick = (ev) => { obs.next(ev) };
+    }).subscribe(observer);
+
+setTimeout(function() {
+    subscription.unsubscribe();
+    console.log('Unsubscribe');
+}, 5000);

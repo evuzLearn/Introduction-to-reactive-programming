@@ -1,9 +1,15 @@
-const observable = Rx.Observable.interval(1000);
-const observer = {
-    next: (value) => console.log(value)
-};
+const subject = new Rx.Subject();
 
-observable
-    .map((value) => 'Number: ' + value)
-    .throttleTime(2000)
-    .subscribe(observer);
+subject.subscribe({
+    next: (value) => console.log(value),
+    error: (err) => console.log('Error: ', err),
+    complete: () => console.log('Complete')
+});
+
+subject.subscribe({
+    next: (value) => console.log(value)
+});
+
+subject.next('A new data');
+subject.error('Error');
+subject.complete('Comp');

@@ -1,8 +1,8 @@
+const clickEmitted = new Rx.BehaviorSubject('Not clicked');
 const button = document.querySelector('button');
+const div = document.querySelector('div');
 
-const obs1 = Rx.Observable.fromEvent(button, 'click');
-const obs2 = Rx.Observable.interval(1000);
+button.addEventListener('click', () => clickEmitted.next('Clicked!'));
 
-obs1.switchMap((ev) => {
-    return obs2
-}).subscribe((value) => console.log(value));
+clickEmitted.subscribe((value) => div.textContent = value);
+// clickEmitted.next('Not clicked');
